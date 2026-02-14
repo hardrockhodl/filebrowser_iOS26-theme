@@ -87,8 +87,6 @@ systemctl restart filebrowser
 
 Feedback and improvements are welcome.
 
-Open an issue or share screenshots of your setup.
-
 ------------------------------------------------------------------------
 
 ## License
