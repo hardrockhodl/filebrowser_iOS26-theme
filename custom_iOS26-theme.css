@@ -1,0 +1,3026 @@
+/* ================================================
+   VARIABLES (iOS 26-ish dark glass)
+   ================================================ */
+@import url("https://fonts.googleapis.com/css2?family=Audiowide&display=swap");
+
+:root {
+  --blue: #2196f3;
+  --dark-blue: #1e88e5;
+  --red: #f44336;
+  --dark-red: #d32f2f;
+  --moon-grey: #f2f2f2;
+
+  --icon-red: #da4453;
+  --icon-orange: #f47750;
+  --icon-yellow: #fdbc4b;
+  --icon-green: #2ecc71;
+  --icon-blue: #1d99f3;
+  --icon-violet: #9b59b6;
+
+  --input-red: rgb(252, 208, 205);
+  --input-green: rgb(201, 242, 218);
+
+  --item-selected: white;
+
+  --action: rgb(84, 110, 122);
+
+  --background: rgb(250, 250, 250);
+  --surfacePrimary: rgb(255, 255, 255);
+  --surfaceSecondary: rgb(230, 230, 230);
+  --divider: rgba(0, 0, 0, 0.05);
+  --iconPrimary: var(--icon-blue);
+  --iconSecondary: rgb(255, 255, 255);
+  --iconTertiary: rgb(204, 204, 204);
+  --textPrimary: rgb(111, 111, 111);
+  --textSecondary: rgb(51, 51, 51);
+  --hover: rgba(0, 0, 0, 0.1);
+  --borderPrimary: rgba(0, 0, 0, 0.1);
+  --borderSecondary: rgba(0, 0, 0, 0.2);
+  --dividerPrimary: rgba(255, 255, 255, 0.4);
+  --dividerSecondary: rgba(255, 255, 255, 0.9);
+
+  /* Glass helpers (used by later sections) */
+  --glass-blur: 18px;
+  --glass-sat: 160%;
+  --shadow-1: 0 10px 30px rgba(0, 0, 0, 0.35);
+  --shadow-2: 0 1px 0 rgba(255, 255, 255, 0.08) inset;
+  --glass-blur-search: 28px;
+  --glass-sat-search: 180%;
+
+}
+
+:root.dark {
+  /* iOS-ish accent */
+  --blue: rgb(10, 132, 255);
+  --dark-blue: rgb(64, 156, 255);
+
+  /* Inputs (tinted glass) */
+  --input-red: rgba(255, 69, 58, 0.22);
+  --input-green: rgba(48, 209, 88, 0.22);
+
+  /* Action color */
+  --action: rgba(255, 255, 255, 0.92);
+
+  /* Base background behind glass */
+  --background: rgb(10, 14, 18);
+
+  /* Glass surfaces */
+  --surfacePrimary: rgba(24, 30, 36, 0.55);
+  --surfaceSecondary: rgba(24, 30, 36, 0.36);
+
+  /* Text */
+  --textPrimary: rgba(255, 255, 255, 0.72);
+  --textSecondary: rgba(255, 255, 255, 0.92);
+
+  /* Dividers, borders, hover */
+  --divider: rgba(255, 255, 255, 0.10);
+  --hover: rgba(255, 255, 255, 0.08);
+  --borderPrimary: rgba(255, 255, 255, 0.10);
+  --borderSecondary: rgba(255, 255, 255, 0.18);
+
+  /* Icons */
+  --iconPrimary: rgba(255, 255, 255, 0.92);
+  --iconSecondary: rgba(255, 255, 255, 0.78);
+  --iconTertiary: rgba(255, 255, 255, 0.46);
+
+  /* Selected */
+  --item-selected: rgba(255, 255, 255, 0.14);
+
+  /* Optional dividers used in some components */
+  --dividerPrimary: rgba(0, 0, 0, 0.35);
+  --dividerSecondary: rgba(0, 0, 0, 0.55);
+}
+
+/* ================================================
+   BASE (iOS 26-ish dark glass)
+   ================================================ */
+
+body::before {
+  content: "";
+  position: fixed;
+  inset: 0;
+  background:
+    url("/static/img/background.webp") center center / cover no-repeat;
+  z-index: -1;
+  opacity: 0.35;
+}
+
+body {
+  font-family:
+    system-ui,
+    -apple-system,
+    "SF Pro Text",
+    "SF Pro Display",
+    "Segoe UI",
+    Roboto,
+    sans-serif;
+  padding-top: 4em;
+  background: var(--background);
+  color: var(--textSecondary);
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+:root.dark body {
+  background: var(--background);
+}
+
+* {
+  box-sizing: border-box;
+}
+
+*,
+*:hover,
+*:active,
+*:focus {
+  outline: 0;
+}
+
+a {
+  text-decoration: none;
+  color: inherit;
+}
+
+img {
+  max-width: 100%;
+}
+
+audio,
+video {
+  width: 100%;
+}
+
+.mobile-only {
+  display: none !important;
+}
+
+.container {
+  width: 95%;
+  max-width: 960px;
+  margin: 1em auto 0;
+}
+
+i.spin {
+  animation: 1s spin linear infinite;
+}
+
+#app {
+  transition: 0.2s ease padding;
+}
+
+#app.multiple {
+  padding-bottom: 4em;
+}
+
+nav {
+  display: flex;
+  flex-direction: column;
+  width: 16em;
+  height: calc(100dvh - 4em);
+  overflow: hidden;
+  position: fixed;
+  top: 4em;
+  left: 0;
+  overflow-y: auto;
+  -webkit-overflow-scrolling: touch;
+}
+
+html[dir="rtl"] nav {
+  left: initial;
+  right: 0;
+}
+
+nav .action {
+  width: 100%;
+  display: block;
+  border-radius: 0;
+  font-size: 1.05em;
+  padding: 0.6em 0.75em;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  color: var(--textSecondary);
+  transition:
+    background 0.15s ease,
+    transform 0.12s ease,
+    box-shadow 0.15s ease;
+}
+
+nav .action:hover {
+  background: var(--hover);
+  transform: translateX(2px);
+}
+
+:root.dark nav .action {
+  background: rgba(255, 255, 255, 0.06);
+  border: 1px solid var(--borderPrimary);
+  border-left: 0;
+  border-right: 0;
+  backdrop-filter: blur(var(--glass-blur)) saturate(var(--glass-sat));
+  -webkit-backdrop-filter: blur(var(--glass-blur)) saturate(var(--glass-sat));
+}
+
+:root.dark nav .action:hover {
+  background: rgba(255, 255, 255, 0.10);
+  box-shadow:
+    0 8px 22px rgba(0, 0, 0, 0.35),
+    0 1px 0 rgba(255, 255, 255, 0.08) inset;
+}
+
+html[dir="rtl"] nav .action {
+  text-align: right;
+}
+
+nav > div {
+  border-top: 1px solid var(--divider);
+}
+
+nav .action > * {
+  vertical-align: middle;
+}
+
+/* Bottom area: disk-usage + version/help should sit at the bottom together */
+nav > div.credits {
+  margin-top: auto !important;
+  margin-left: 1.25em !important;
+  margin-right: 1.25em !important;
+  margin-bottom: 0.75em !important;
+  width: calc(100% - 2.5em) !important;
+}
+
+
+/* The text block under the bar */
+nav > p.credits {
+  margin: 0 1.25em 1.25em !important;
+  font-size: 0.6em;
+  color: #a5a5a5;
+}
+
+main {
+  min-height: 1em;
+  margin: 0 1em 1em auto;
+  width: calc(100% - 19em);
+}
+
+.breadcrumbs {
+  height: 3em;
+  background: transparent;
+  border-bottom: 1px solid var(--divider);
+  position: sticky;
+  z-index: 1000;
+  top: 4em;
+}
+
+:root.dark .breadcrumbs {
+  background: transparent;
+  border-bottom: 1.5px solid var(--borderPrimary);
+}
+
+.breadcrumbs span,
+.breadcrumbs {
+  display: flex;
+  align-items: center;
+  color: var(--textPrimary);
+}
+
+.breadcrumbs a {
+  color: inherit;
+  transition: 0.12s ease-in;
+  border-radius: 0.4em;
+}
+
+html[dir="rtl"] .breadcrumbs a {
+  transform: translateX(-16em);
+}
+
+.breadcrumbs a:hover {
+  background-color: var(--hover);
+}
+
+.breadcrumbs span a {
+  padding: 0.25em 0.4em;
+}
+
+.files {
+  position: absolute;
+  bottom: 30px;
+  width: 100%;
+}
+
+.progress {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 3px;
+  z-index: 9999999999;
+}
+
+.progress div {
+  height: 100%;
+  background-color: var(--blue);
+  width: 0;
+  transition: 0.2s ease width;
+}
+
+.break-word {
+  word-break: break-all;
+}
+
+/* ================================================
+   vue-simple-progress (cooler, glass)
+   ================================================ */
+
+.vue-simple-progress {
+  height: 6px !important;
+  border-radius: 999px;
+  overflow: hidden;
+
+  background: rgba(255, 255, 255, 0.10) !important;
+  border: 1px solid rgba(255, 255, 255, 0.10);
+
+  box-shadow:
+    0 10px 26px rgba(0, 0, 0, 0.28),
+    0 1px 0 rgba(255, 255, 255, 0.06) inset;
+}
+
+:root.dark .vue-simple-progress {
+  backdrop-filter: blur(calc(var(--glass-blur) - 6px)) saturate(var(--glass-sat));
+  -webkit-backdrop-filter: blur(calc(var(--glass-blur) - 6px)) saturate(var(--glass-sat));
+}
+
+.vue-simple-progress-bar {
+  height: 100% !important;
+  border-radius: 999px;
+
+  background: linear-gradient(
+    90deg,
+    rgba(10, 132, 255, 1),
+    rgba(94, 92, 230, 1),
+    rgba(48, 209, 88, 1)
+  ) !important;
+
+  box-shadow:
+    0 10px 22px rgba(10, 132, 255, 0.35),
+    0 1px 0 rgba(255, 255, 255, 0.12) inset;
+
+  transition: width 0.35s ease !important;
+}
+
+/* ================================================
+   vue-number-input (cooler, glass)
+   ================================================ */
+
+.vue-number-input > input {
+  background: rgba(255, 255, 255, 0.06) !important;
+  border: 1px solid rgba(255, 255, 255, 0.10) !important;
+  color: var(--textSecondary) !important;
+
+  border-radius: 0.8em !important;
+
+  box-shadow:
+    0 12px 32px rgba(0, 0, 0, 0.22),
+    0 1px 0 rgba(255, 255, 255, 0.06) inset;
+}
+
+:root.dark .vue-number-input > input {
+  backdrop-filter: blur(calc(var(--glass-blur) - 6px)) saturate(var(--glass-sat));
+  -webkit-backdrop-filter: blur(calc(var(--glass-blur) - 6px)) saturate(var(--glass-sat));
+}
+
+.vue-number-input--small > input {
+  height: 1.9rem !important;
+  font-size: 0.95rem !important;
+}
+
+/* Hover/focus */
+.vue-number-input > input:hover,
+.vue-number-input > input:focus {
+  border-color: rgba(10, 132, 255, 0.55) !important;
+}
+
+.vue-number-input__button {
+  background: rgba(255, 255, 255, 0.06) !important;
+  border-radius: 0.8em !important;
+}
+
+.vue-number-input__button--minus,
+.vue-number-input__button--plus {
+  border-color: rgba(255, 255, 255, 0.10) !important;
+}
+
+.vue-number-input__button::before,
+.vue-number-input__button::after {
+  background: var(--textSecondary) !important;
+}
+
+/* Button hover micro feedback */
+.vue-number-input__button:hover {
+  background: rgba(255, 255, 255, 0.10) !important;
+}
+
+.vfm-modal {
+  z-index: 9999999 !important;
+}
+
+body > div[style*="z-index: 9990"] {
+  z-index: 10000 !important;
+}
+
+/* ================================================
+   BUTTONS (iOS 26-ish dark glass)
+   ================================================ */
+
+.button {
+  outline: 0;
+  padding: 0.55em 1.1em;
+  border-radius: 0.75em;
+  cursor: pointer;
+  font-weight: 500;
+
+  background: var(--blue);
+  color: #fff;
+
+  border: 1px solid var(--borderPrimary);
+  box-shadow:
+    0 6px 20px rgba(0, 0, 0, 0.25),
+    0 1px 0 rgba(255, 255, 255, 0.15) inset;
+
+  transition: 0.15s ease all;
+}
+
+.button:hover {
+  background: var(--dark-blue);
+  box-shadow:
+    0 10px 28px rgba(0, 0, 0, 0.35),
+    0 1px 0 rgba(255, 255, 255, 0.2) inset;
+}
+
+.button:active {
+  transform: scale(0.98);
+}
+
+/* Block */
+.button--block {
+  margin: 0 0 0.5em;
+  display: block;
+  width: 100%;
+}
+
+/* Variants */
+.button--red {
+  background: var(--red);
+}
+
+.button--blue {
+  background: var(--blue);
+}
+
+/* Flat, glass style */
+.button--flat {
+  background: transparent;
+  color: var(--blue);
+  border: 1px solid transparent;
+  box-shadow: none;
+  text-transform: uppercase;
+  letter-spacing: 0.03em;
+}
+
+:root.dark .button--flat {
+  background: rgba(255, 255, 255, 0.06);
+  color: var(--textSecondary);
+  border: 1px solid var(--borderPrimary);
+  backdrop-filter: blur(calc(var(--glass-blur) - 6px)) saturate(var(--glass-sat));
+  -webkit-backdrop-filter: blur(calc(var(--glass-blur) - 6px)) saturate(var(--glass-sat));
+}
+
+.button--flat:hover {
+  background: var(--hover);
+}
+
+.button--flat.button--red {
+  color: var(--dark-red);
+}
+
+:root.dark .button--flat.button--red {
+  color: var(--red);
+}
+
+.button--flat.button--grey {
+  color: #6f6f6f;
+}
+
+:root.dark .button--flat.button--grey {
+  color: var(--textPrimary);
+}
+
+/* Disabled */
+.button[disabled] {
+  opacity: 0.45;
+  cursor: not-allowed;
+  box-shadow: none;
+}
+
+/* ================================================
+   INPUT (iOS 26-ish dark glass)
+   ================================================ */
+
+.input {
+  background: var(--surfacePrimary);
+  color: var(--textSecondary);
+
+  border: 1px solid var(--borderPrimary);
+  border-radius: 0.75em;
+
+  padding: 0.55em 1em;
+  margin: 0;
+
+  transition: 0.15s ease all;
+}
+
+:root.dark .input {
+  backdrop-filter: blur(calc(var(--glass-blur) - 6px)) saturate(var(--glass-sat));
+  -webkit-backdrop-filter: blur(calc(var(--glass-blur) - 6px)) saturate(var(--glass-sat));
+  box-shadow:
+    0 4px 14px rgba(0, 0, 0, 0.25),
+    0 1px 0 rgba(255, 255, 255, 0.06) inset;
+}
+
+.input:hover {
+  border-color: var(--borderSecondary);
+}
+
+.input:focus {
+  border-color: var(--blue);
+  box-shadow:
+    0 0 0 3px rgba(10, 132, 255, 0.18),
+    0 4px 18px rgba(0, 0, 0, 0.35);
+}
+
+/* Block */
+.input--block {
+  margin-bottom: 0.5em;
+  display: block;
+  width: 100%;
+}
+
+/* Textarea */
+.input--textarea {
+  line-height: 1.2;
+  font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, monospace;
+  min-height: 10em;
+  resize: vertical;
+}
+
+/* Validation states */
+.input--red {
+  background: var(--input-red) !important;
+  border-color: rgba(255, 69, 58, 0.4) !important;
+}
+
+.input--green {
+  background: var(--input-green) !important;
+  border-color: rgba(48, 209, 88, 0.4) !important;
+}
+
+/* ================================================
+   SHARE (iOS 26-ish dark glass)
+   ================================================ */
+
+.share {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  align-items: flex-start;
+}
+
+@media (max-width: 736px) {
+  .share {
+    display: block;
+  }
+}
+
+.share__box {
+  background: var(--surfacePrimary);
+  color: var(--textPrimary);
+
+  border: 1px solid var(--borderPrimary);
+  border-radius: 1em;
+  margin: 8px;
+  overflow: hidden;
+
+  box-shadow:
+    0 12px 32px rgba(0, 0, 0, 0.35),
+    0 1px 0 rgba(255, 255, 255, 0.06) inset;
+}
+
+:root.dark .share__box {
+  backdrop-filter: blur(var(--glass-blur)) saturate(var(--glass-sat));
+  -webkit-backdrop-filter: blur(var(--glass-blur)) saturate(var(--glass-sat));
+}
+
+.share__box__header {
+  padding: 1.2em 1em;
+  text-align: center;
+  border-bottom: 1px solid var(--divider);
+}
+
+.share__box__icon i {
+  font-size: 8em;
+  color: var(--blue);
+  opacity: 0.9;
+}
+
+.share__box__center {
+  text-align: center;
+}
+
+.share__box__info {
+  flex: 1 1 18em;
+}
+
+.share__box__element {
+  padding: 1em;
+  border-top: 1px solid var(--borderPrimary);
+  word-break: break-all;
+}
+
+.share__box__element.share__box__center {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 1.5rem;
+}
+
+.share__box__element .button {
+  display: inline-block;
+}
+
+.share__box__element .button i {
+  display: block;
+  margin-bottom: 4px;
+}
+
+.share__box__items {
+  text-align: left;
+  flex: 10 0 25em;
+}
+
+.share__box__items #listing.list .item {
+  cursor: pointer;
+  border-left: 0;
+  border-right: 0;
+  border-bottom: 0;
+  border-top: 1px solid var(--borderPrimary);
+  transition: 0.12s ease background;
+}
+
+:root.dark .share__box__items #listing.list .item:hover {
+  background: var(--hover);
+}
+
+#listing.list .item .name {
+  width: 50%;
+}
+
+#listing.list .item .modified {
+  width: 25%;
+}
+
+/* Error state */
+.share__wrong__password {
+  background: rgba(255, 69, 58, 0.9);
+  color: #fff;
+  padding: 0.6em;
+  text-align: center;
+  border-radius: 0.75em;
+  margin: 0.5em;
+  animation: 0.2s opac forwards;
+}
+
+/* ================================================
+   SHELL (iOS 26-ish dark glass terminal)
+   ================================================ */
+
+.shell {
+  position: fixed;
+  bottom: 0;
+  left: 0;
+  max-height: calc(100% - 4em);
+  width: 100%;
+
+  color: var(--textPrimary);
+  background: rgba(20, 26, 32, 0.65);
+
+  border-top: 1px solid var(--borderPrimary);
+  backdrop-filter: blur(var(--glass-blur)) saturate(var(--glass-sat));
+  -webkit-backdrop-filter: blur(var(--glass-blur)) saturate(var(--glass-sat));
+
+  box-shadow:
+    0 -10px 40px rgba(0, 0, 0, 0.45),
+    0 1px 0 rgba(255, 255, 255, 0.05) inset;
+
+  z-index: 9999;
+  transition: 0.2s ease background, 0.2s ease transform;
+
+  cursor: ns-resize;
+  touch-action: none;
+  user-select: none;
+}
+
+.shell__divider {
+  width: 100%;
+  height: 10px;
+  background: rgba(255, 255, 255, 0.15);
+  backdrop-filter: blur(8px);
+  -webkit-backdrop-filter: blur(8px);
+  transition: 0.15s ease background;
+}
+
+.shell__divider:hover {
+  background: rgba(255, 255, 255, 0.35);
+}
+
+.shell__content {
+  height: 100%;
+  overflow: auto;
+
+  font-family:
+    ui-monospace,
+    SFMono-Regular,
+    Menlo,
+    Monaco,
+    monospace;
+
+  font-size: 0.95rem;
+  cursor: text;
+
+  background: rgba(0, 0, 0, 0.25);
+  box-shadow:
+    0 0 0 1px var(--borderPrimary) inset;
+
+  transition: 0.2s ease transform;
+}
+
+.shell__overlay {
+  position: fixed;
+  inset: 0;
+  z-index: 9998;
+
+  background: rgba(0, 0, 0, 0.35);
+  backdrop-filter: blur(6px);
+  -webkit-backdrop-filter: blur(6px);
+}
+
+body.rtl .shell-content {
+  direction: ltr;
+}
+
+.shell__result {
+  display: flex;
+  align-items: flex-start;
+  padding: 0.6em 0.75em;
+
+  border-top: 1px solid var(--divider);
+}
+
+.shell--hidden {
+  transform: translateY(105%);
+}
+
+.shell__result--hidden {
+  opacity: 0;
+}
+
+.shell__text,
+.shell__prompt,
+.shell__prompt i {
+  font-size: inherit;
+}
+
+.shell__prompt {
+  width: 1.4rem;
+  opacity: 0.9;
+}
+
+.shell__prompt i {
+  color: var(--blue);
+}
+
+.shell__text {
+  margin: 0;
+  font-family: inherit;
+  white-space: pre-wrap;
+  width: 100%;
+  color: var(--textSecondary);
+}
+
+/* ================================================
+   DASHBOARD (iOS 26-ish dark glass)
+   ================================================ */
+
+.dashboard {
+  margin: 1em 0;
+}
+
+.dashboard .row {
+  display: flex;
+  margin: 0 -0.5em;
+  flex-wrap: wrap;
+}
+
+html[dir="rtl"] .dashboard .row {
+  margin-right: 16em;
+}
+
+.dashboard .row .column {
+  display: flex;
+  padding: 0 0.5em;
+  width: 50%;
+}
+
+.dashboard .row .column .card {
+  flex-grow: 1;
+}
+
+@media (max-width: 1200px) {
+  .dashboard .row .column {
+    width: 100%;
+  }
+}
+
+a {
+  color: inherit;
+}
+
+.dashboard p label {
+  margin-bottom: 0.2em;
+  display: block;
+  font-size: 0.8em;
+  font-weight: 600;
+  color: var(--textPrimary);
+}
+
+/* inline code */
+li code,
+p code {
+  background: rgba(255, 255, 255, 0.08);
+  padding: 0.15em 0.35em;
+  border-radius: 0.45em;
+  border: 1px solid var(--borderPrimary);
+}
+
+.small {
+  font-size: 0.8em;
+  line-height: 1.5;
+}
+
+/* Tabs */
+.dashboard #nav {
+  display: flex;
+  padding-bottom: 1em;
+  overflow: auto;
+}
+
+.dashboard #nav .wrapper {
+  display: flex;
+  flex-grow: 1;
+  border-bottom: 1px solid var(--divider);
+}
+
+:root.dark .dashboard #nav .wrapper {
+  background: rgba(24, 30, 36, 0.35);
+  border: 1px solid var(--borderPrimary);
+  border-left: 0;
+  border-right: 0;
+  backdrop-filter: blur(var(--glass-blur)) saturate(var(--glass-sat));
+  -webkit-backdrop-filter: blur(var(--glass-blur)) saturate(var(--glass-sat));
+}
+
+html[dir="rtl"] .dashboard #nav .wrapper {
+  margin-right: 16em;
+}
+
+.dashboard #nav ul {
+  list-style: none;
+  display: flex;
+  color: var(--action);
+  font-weight: 600;
+  padding: 0;
+  margin: 0;
+  font-size: 0.82em;
+  text-align: center;
+  justify-content: left;
+}
+
+.dashboard #nav ul li {
+  position: relative;
+  padding: 1.1em 1.4em;
+  white-space: nowrap;
+  border-bottom: 2px solid transparent;
+  border-radius: 0.8em 0.8em 0 0;
+  transition: 0.12s ease-in-out background, 0.12s ease-in-out color;
+}
+
+.dashboard #nav ul li:hover {
+  background: var(--hover);
+}
+
+.dashboard #nav ul li.active {
+  border-color: var(--blue);
+  color: var(--textSecondary);
+}
+
+.dashboard #nav ul li.active::before {
+  width: 100%;
+  height: 100%;
+  position: absolute;
+  top: 0;
+  left: 0;
+  content: "";
+  background: rgba(10, 132, 255, 0.22);
+  opacity: 1;
+  border-radius: inherit;
+}
+
+.dashboard #nav i {
+  font-size: 1em;
+  vertical-align: middle;
+}
+
+/* Tables */
+table {
+  border-collapse: collapse;
+  width: 100%;
+}
+
+table tr {
+  border-bottom: 1px solid var(--divider);
+}
+
+table tr:last-child {
+  border: 0;
+}
+
+table th {
+  font-weight: 600;
+  color: var(--textSecondary);
+  text-align: left;
+}
+
+table th,
+table td {
+  padding: 0.6em 0;
+}
+
+table td.small {
+  width: 1em;
+}
+
+table tr > *:first-child {
+  padding-left: 1em;
+}
+
+html[dir="rtl"] table tr > * {
+  padding-left: unset;
+  padding-right: 1em;
+  text-align: right;
+  direction: ltr;
+}
+
+table tr > *:last-child {
+  padding-right: 1em;
+}
+
+/* Cards (glass) */
+.card {
+  position: relative;
+  margin: 0 0 1rem 0;
+
+  background: var(--surfacePrimary);
+  color: var(--textSecondary);
+
+  border: 1px solid var(--borderPrimary);
+  border-radius: 1em;
+
+  box-shadow:
+    0 12px 32px rgba(0, 0, 0, 0.35),
+    0 1px 0 rgba(255, 255, 255, 0.06) inset;
+
+  overflow: auto;
+}
+
+:root.dark .card {
+  backdrop-filter: blur(var(--glass-blur)) saturate(var(--glass-sat));
+  -webkit-backdrop-filter: blur(var(--glass-blur)) saturate(var(--glass-sat));
+}
+
+.card.floating {
+  position: fixed;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  max-width: 25em;
+  width: 90%;
+  max-height: 95%;
+}
+
+.card > * > *:first-child {
+  margin-top: 0;
+}
+
+.card > * > *:last-child {
+  margin-bottom: 0;
+}
+
+.card .card-title {
+  padding: 1.4em 1em 1em;
+  display: flex;
+  border-bottom: 1px solid var(--divider);
+}
+
+.card .card-title > *:first-child {
+  margin-right: auto;
+}
+
+html[dir="rtl"] .card .card-title > *:first-child {
+  margin-right: 0;
+  text-align: right;
+}
+
+.card > div {
+  padding: 1em 1em;
+}
+
+.card > div:first-child {
+  padding-top: 1.4em;
+}
+
+.card > div:last-child {
+  padding-bottom: 1.4em;
+}
+
+.card .card-title * {
+  margin: 0;
+}
+
+.card .card-action {
+  text-align: right;
+}
+
+body.rtl .card .card-action {
+  text-align: left;
+}
+
+.card .card-content.full {
+  padding-bottom: 0;
+  overflow: auto;
+}
+
+.card h2 {
+  font-weight: 650;
+}
+
+.card h3 {
+  color: var(--textPrimary);
+  font-size: 1em;
+  font-weight: 600;
+  margin: 2em 0 1em;
+}
+
+.card-content table {
+  margin: 0 -1em;
+  width: calc(100% + 2em);
+}
+
+.card code {
+  word-wrap: break-word;
+}
+
+.card#download {
+  max-width: 15em;
+}
+
+/* Share card inputs */
+.card#share input,
+.card#share select,
+.card#share input::-webkit-inner-spin-button,
+.card#share input::-webkit-outer-spin-button {
+  background: var(--surfacePrimary);
+  color: var(--textSecondary);
+  border: 1px solid var(--borderPrimary);
+  border-radius: 0.75em;
+}
+
+.card#share ul {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+}
+
+.card#share ul li {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.card#share ul li a {
+  color: var(--blue);
+  cursor: pointer;
+  margin-right: auto;
+}
+
+.card#share ul li .action i {
+  font-size: 1em;
+}
+
+.card#share ul li input,
+.card#share ul li select {
+  padding: 0.35em 0.5em;
+  margin-right: 0.5em;
+  border: 1px solid var(--borderPrimary);
+}
+
+.card#share .action.copy-clipboard::after {
+  content: "Copied!";
+  position: absolute;
+  left: -25%;
+  width: 150%;
+  font-size: 0.6em;
+  text-align: center;
+  background: var(--blue);
+  color: #fff;
+  padding: 0.5em 0.2em;
+  border-radius: 0.75em;
+  top: -2.2em;
+  transition: 0.1s ease opacity;
+  opacity: 0;
+}
+
+.card#share .action.copy-clipboard.active::after {
+  opacity: 1;
+}
+
+.card#share .input-group {
+  display: flex;
+}
+
+.card#share .input-group * {
+  border: none;
+}
+
+.card#share .input-group input {
+  flex: 1;
+}
+
+/* Overlay */
+.overlay {
+  background-color: rgba(0, 0, 0, 0.55);
+  position: fixed;
+  top: 0;
+  left: 0;
+  height: 100%;
+  width: 100%;
+  z-index: 9999;
+  visibility: hidden;
+  opacity: 0;
+  animation: 0.1s show forwards;
+  backdrop-filter: blur(6px);
+  -webkit-backdrop-filter: blur(6px);
+}
+
+/* PROMPT - MOVE */
+.file-list {
+  max-height: 50vh;
+  overflow: auto;
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  width: 100%;
+}
+
+.file-list li {
+  width: 100%;
+  user-select: none;
+  border-radius: 0.75em;
+  padding: 0.45em 0.6em;
+  transition: 0.12s ease background;
+}
+
+.file-list li[aria-selected="true"] {
+  background: rgba(10, 132, 255, 0.28) !important;
+  color: var(--textSecondary) !important;
+  border: 1px solid rgba(10, 132, 255, 0.35);
+}
+
+.file-list li:hover {
+  background: var(--hover);
+  cursor: pointer;
+}
+
+.file-list li:before {
+  content: "folder";
+  color: var(--textPrimary);
+  vertical-align: middle;
+  line-height: 1.4;
+  font-family: "Material Icons";
+  font-size: 1.75em;
+  margin-right: 0.25em;
+}
+
+.file-list li[aria-selected="true"]:before {
+  color: var(--textSecondary);
+}
+
+.help {
+  max-width: 24em;
+}
+
+.help ul {
+  padding: 0;
+  margin: 1em 0;
+  list-style: none;
+}
+
+@keyframes show {
+  0% {
+    visibility: hidden;
+    opacity: 0;
+  }
+  1% {
+    visibility: visible;
+    opacity: 0;
+  }
+  100% {
+    visibility: visible;
+    opacity: 1;
+  }
+}
+
+/* Collapsible */
+.collapsible {
+  border-top: 1px solid var(--divider);
+}
+
+.collapsible:last-of-type {
+  border-bottom: 1px solid var(--divider);
+}
+
+.collapsible > input {
+  display: none;
+}
+
+.collapsible > label {
+  padding: 1em 0;
+  cursor: pointer;
+  border-right: 0;
+  border-left: 0;
+  display: flex;
+  justify-content: space-between;
+}
+
+.collapsible > label * {
+  margin: 0;
+  color: var(--textPrimary);
+}
+
+.collapsible > label i {
+  transition: 0.2s ease transform;
+  user-select: none;
+}
+
+.collapsible .collapse {
+  max-height: 0;
+  overflow: hidden;
+  transition: 0.2s ease all;
+}
+
+.collapsible > input:checked ~ .collapse {
+  padding-top: 1em;
+  padding-bottom: 1em;
+  max-height: 20em;
+}
+
+.collapsible > input:checked ~ label i {
+  transform: rotate(180deg);
+}
+
+.card .collapsible {
+  width: calc(100% + 2em);
+  margin: 0 -1em;
+}
+
+.card .collapsible > label {
+  padding: 1em;
+}
+
+.card .collapsible .collapse {
+  padding: 0 1em;
+}
+
+/* Big action tiles */
+.card .card-action.full {
+  padding-top: 0;
+  display: flex;
+  flex-wrap: wrap;
+}
+
+.card .card-action.full .action {
+  flex: 1;
+  padding: 2em;
+  border-radius: 1em;
+  border: 1px solid var(--borderPrimary);
+  text-align: center;
+  background: rgba(255, 255, 255, 0.06);
+}
+
+:root.dark .card .card-action.full .action {
+  backdrop-filter: blur(calc(var(--glass-blur) - 6px)) saturate(var(--glass-sat));
+  -webkit-backdrop-filter: blur(calc(var(--glass-blur) - 6px)) saturate(var(--glass-sat));
+}
+
+.card .card-action.full .action {
+  margin: 0 0.25em 0.5em;
+}
+
+.card .card-action.full .action:hover {
+  background: rgba(255, 255, 255, 0.09);
+}
+
+.card .card-action.full .action i {
+  display: block;
+  padding: 0;
+  margin-bottom: 0.25em;
+  font-size: 4em;
+}
+
+.card .card-action.full .action .title {
+  font-size: 1.35em;
+  font-weight: 650;
+}
+
+/*** RTL - Fix disk usage information (in english) ***/
+html[dir="rtl"] .credits {
+  text-align: right;
+  direction: ltr;
+}
+
+
+/* ================================================
+   EPUBREADER (iOS 26-ish dark glass)
+   ================================================ */
+
+.epub-reader {
+  display: flex;
+  align-items: flex-end;
+  height: 100%;
+}
+
+.epub-reader .container {
+  width: 100%;
+  max-width: 100%;
+  height: calc(100% - 64px);
+  margin: 0;
+}
+
+.epub-reader .arrow.pre {
+  left: 0;
+}
+
+/* Reader surface */
+.epub-reader .readerArea {
+  background: rgba(20, 26, 32, 0.65) !important;
+  color: var(--textSecondary);
+
+  backdrop-filter: blur(var(--glass-blur)) saturate(var(--glass-sat));
+  -webkit-backdrop-filter: blur(var(--glass-blur)) saturate(var(--glass-sat));
+}
+
+/* Title */
+.epub-reader .titleArea {
+  color: var(--textSecondary);
+  font-weight: 600;
+}
+
+/* TOC bar */
+.epub-reader .tocButtonBar {
+  background: rgba(255, 255, 255, 0.08);
+  border-bottom: 1px solid var(--borderPrimary);
+
+  backdrop-filter: blur(calc(var(--glass-blur) - 6px)) saturate(var(--glass-sat));
+  -webkit-backdrop-filter: blur(calc(var(--glass-blur) - 6px)) saturate(var(--glass-sat));
+}
+
+.epub-reader .tocButton {
+  color: var(--textPrimary);
+  transition: 0.12s ease color, 0.12s ease background;
+}
+
+.epub-reader .tocButton:hover {
+  background: var(--hover);
+  border-radius: 0.5em;
+}
+
+.epub-reader .tocButton.tocButtonExpanded {
+  background: rgba(255, 255, 255, 0.12);
+  color: var(--textSecondary);
+  border-radius: 0.6em;
+}
+
+/* Active TOC item */
+.epub-reader .tocAreaButton.active {
+  color: var(--blue);
+  border-color: var(--blue);
+}
+
+/* TOC area */
+.epub-reader .tocArea {
+  background: rgba(20, 26, 32, 0.55);
+
+  backdrop-filter: blur(calc(var(--glass-blur) - 4px)) saturate(var(--glass-sat));
+  -webkit-backdrop-filter: blur(calc(var(--glass-blur) - 4px)) saturate(var(--glass-sat));
+}
+
+/* Arrows */
+.epub-reader .readerArea .arrow {
+  color: var(--textPrimary);
+  transition: 0.12s ease color, 0.12s ease background;
+  border-radius: 0.75em;
+}
+
+.epub-reader .readerArea .arrow:hover {
+  color: var(--textSecondary);
+  background: rgba(255, 255, 255, 0.1);
+}
+
+/* Font size controls */
+.epub-reader .size {
+  display: flex;
+  gap: 6px;
+  align-items: center;
+  z-index: 111;
+  right: 25px;
+  position: absolute;
+  top: 78px;
+}
+
+.epub-reader .size span {
+  color: var(--textSecondary);
+  font-weight: 500;
+}
+
+.epub-reader .size button {
+  background: rgba(255, 255, 255, 0.08);
+  border: 1px solid var(--borderPrimary);
+  border-radius: 0.6em;
+
+  width: 28px;
+  height: 28px;
+
+  color: var(--textPrimary);
+  padding: 0;
+
+  transition: 0.12s ease background, 0.12s ease transform;
+}
+
+.epub-reader .size button:hover {
+  background: rgba(255, 255, 255, 0.14);
+}
+
+.epub-reader .size button:active {
+  transform: scale(0.95);
+}
+
+
+/* ================================================
+   FONTS (iOS 26-ish typography tuning)
+   ================================================ */
+
+@import "material-icons/iconfont/filled.css";
+
+/* Keep your existing Roboto @font-face blocks unchanged above */
+
+/* Prefer system UI on Apple devices, fallback to Roboto */
+body {
+  font-family:
+    system-ui,
+    -apple-system,
+    "SF Pro Text",
+    "SF Pro Display",
+    "Segoe UI",
+    Roboto,
+    sans-serif;
+
+  font-weight: 400;
+  letter-spacing: 0.01em;
+  text-rendering: optimizeLegibility;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+/* Headings slightly heavier, iOS-like */
+h1,
+h2,
+h3,
+.card h2,
+.card h3 {
+  font-weight: 600;
+  letter-spacing: -0.01em;
+}
+
+/* Monospace areas */
+code,
+pre,
+.shell__content,
+.input--textarea {
+  font-family:
+    ui-monospace,
+    SFMono-Regular,
+    Menlo,
+    Monaco,
+    "Roboto Mono",
+    monospace;
+  font-size: 0.95em;
+}
+
+/* Material Icons tuning for glass UI */
+.material-icons {
+  font-size: 1.4rem;
+  line-height: 1;
+  vertical-align: middle;
+  opacity: 0.92;
+}
+
+/* Slightly softer icon tone in dark mode */
+:root.dark .material-icons {
+  opacity: 0.85;
+}
+
+/* ================================================
+   HEADER (iOS 26-ish dark glass)
+   ================================================ */
+
+header {
+  z-index: 1000;
+  position: fixed;
+  top: 0;
+  left: 0;
+
+  height: 4em;
+  width: 100%;
+
+  display: flex;
+  align-items: center;
+  padding: 0.5em 0.75em 0.5em 1em;
+
+  background: var(--surfacePrimary);
+  border-bottom: 1px solid var(--divider);
+  box-shadow:
+    0 10px 30px rgba(0, 0, 0, 0.12),
+    0 1px 0 rgba(255, 255, 255, 0.06) inset;
+}
+
+:root.dark header {
+  background: rgba(24, 30, 36, 0.55);
+  border-bottom: 1px solid var(--borderPrimary);
+
+  backdrop-filter: blur(var(--glass-blur)) saturate(var(--glass-sat));
+  -webkit-backdrop-filter: blur(var(--glass-blur)) saturate(var(--glass-sat));
+
+  box-shadow:
+    0 16px 40px rgba(0, 0, 0, 0.45),
+    0 1px 0 rgba(255, 255, 255, 0.06) inset;
+}
+
+header > * {
+  flex: 0 0 auto;
+}
+
+header title {
+  display: block;
+  flex: 1 1 auto;
+  padding: 0 1em;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  font-size: 1.05em;
+  font-weight: 600;
+  color: var(--textSecondary);
+}
+
+header .overlay {
+  width: 0;
+  height: 0;
+}
+
+header a,
+header a:hover {
+  color: inherit;
+}
+
+header > div:first-child > .action,
+header img {
+  margin-right: 1em;
+}
+
+header img {
+  height: 2.5em;
+}
+
+header .action span {
+  display: none;
+}
+
+header > div div {
+  vertical-align: middle;
+  position: relative;
+}
+
+header .search-button,
+header .menu-button {
+  display: none;
+}
+
+#more {
+  display: none;
+}
+
+/* ================================================
+   SEARCH (fixed, desktop + mobile)
+   ================================================ */
+
+/* Search container */
+#search {
+  position: relative;
+  height: 100%;
+  width: 100%;
+  max-width: 25em;
+}
+
+/* Fullscreen mode */
+#search.active {
+  position: fixed;
+  top: 0;
+  right: 0;
+  width: 100%;
+  max-width: 100%;
+  height: 100dvh;
+  z-index: 9999;
+}
+
+/* Search input bar */
+#search #input {
+  display: flex;
+  align-items: center;
+  height: 100%;
+  padding: 0 0.8em 0 4em;
+
+  background: var(--surfaceSecondary);
+  border: 1px solid var(--borderPrimary);
+  border-radius: 0.9em;
+
+  transition: 0.12s ease all;
+  z-index: 2;
+}
+
+:root.dark #search #input {
+  background: rgba(255, 255, 255, 0.08);
+  backdrop-filter: blur(calc(var(--glass-blur) - 6px)) saturate(var(--glass-sat));
+  -webkit-backdrop-filter: blur(calc(var(--glass-blur) - 6px)) saturate(var(--glass-sat));
+}
+
+#search #input input::placeholder {
+  color: var(--textPrimary);
+}
+
+#search.active #input {
+  border-radius: 0;
+  border: 0;
+  border-bottom: 1px solid var(--borderPrimary);
+
+  background: rgba(24, 30, 36, 0.65);
+  height: 4em;
+
+  box-shadow:
+    0 12px 32px rgba(0, 0, 0, 0.45),
+    0 1px 0 rgba(255, 255, 255, 0.06) inset;
+
+  backdrop-filter: blur(var(--glass-blur)) saturate(var(--glass-sat));
+  -webkit-backdrop-filter: blur(var(--glass-blur)) saturate(var(--glass-sat));
+}
+
+#search.active > div {
+  border-radius: 0 !important;
+}
+
+#search.active i,
+#search.active input {
+  color: var(--textSecondary);
+}
+
+#search #input > .action,
+#search #input > i {
+  margin-right: 0.4em;
+  user-select: none;
+}
+
+#search input {
+  width: 100%;
+  border: 0;
+  background-color: transparent;
+  padding: 0;
+  color: var(--textSecondary);
+}
+
+/* Results sheet */
+#search #result {
+  visibility: visible;
+  max-height: none;
+
+  background: rgba(20, 26, 32, 0.55);
+  color: var(--textPrimary);
+
+  text-align: left;
+  padding: 0;
+  height: 0;
+
+  transition:
+    0.12s ease height,
+    0.12s ease padding;
+
+  overflow-x: hidden;
+  overflow-y: auto;
+  -webkit-overflow-scrolling: touch;
+
+  z-index: 1;
+
+  border-top: 1px solid var(--divider);
+
+  backdrop-filter: blur(var(--glass-blur)) saturate(var(--glass-sat));
+  -webkit-backdrop-filter: blur(var(--glass-blur)) saturate(var(--glass-sat));
+}
+
+html[dir="rtl"] #search #result {
+  direction: ltr;
+}
+
+#search #result > div > *:first-child {
+  margin-top: 0;
+}
+
+html[dir="rtl"] #search #result {
+  text-align: right;
+}
+
+/*** RTL - Keep search result LTR because it has paths (in english) ***/
+html[dir="rtl"] #search #result ul > * {
+  direction: ltr;
+  text-align: left;
+}
+
+/* Use dvh so iOS Safari mobile behaves */
+#search.active #result {
+  padding: 0.75em;
+  height: calc(100dvh - 4em);
+  backdrop-filter: blur(var(--glass-blur-search)) saturate(var(--glass-sat-search));
+  -webkit-backdrop-filter: blur(var(--glass-blur-search)) saturate(var(--glass-sat-search));
+}
+
+/* Results container width */
+#search.active #result > div {
+  max-width: 56rem;
+  margin: 0 auto;
+  width: 100%;
+}
+
+#search ul {
+  padding: 0;
+  margin: 0;
+  list-style: none;
+}
+
+#search li {
+  margin-bottom: 0.5em;
+}
+
+#search #result #renew {
+  width: 100%;
+  text-align: center;
+  display: none;
+  margin: 0;
+  max-width: none;
+}
+
+#search.ongoing #result #renew {
+  display: block;
+}
+
+#search.active #result i {
+  color: var(--iconTertiary);
+}
+
+#search.active #result > p > i {
+  text-align: center;
+  margin: 0 auto;
+  display: table;
+}
+
+#search.active #result ul li a {
+  display: flex;
+  align-items: center;
+  padding: 0.4em 0.35em;
+  border-radius: 0.75em;
+  transition: 0.12s ease background;
+}
+
+#search.active #result ul li a:hover {
+  background: var(--hover);
+}
+
+#search.active #result ul li a i {
+  margin-right: 0.4em;
+}
+
+/* Result “boxes” */
+#search .boxes {
+  border: 1px solid var(--borderPrimary);
+  background: var(--surfacePrimary);
+  margin: 0.75em 0 1em;
+  border-radius: 1em;
+  overflow: hidden;
+
+  box-shadow:
+    0 12px 32px rgba(0, 0, 0, 0.35),
+    0 1px 0 rgba(255, 255, 255, 0.06) inset;
+}
+
+:root.dark #search .boxes {
+  backdrop-filter: blur(var(--glass-blur)) saturate(var(--glass-sat));
+  -webkit-backdrop-filter: blur(var(--glass-blur)) saturate(var(--glass-sat));
+}
+
+#search .boxes h3 {
+  margin: 0;
+  font-weight: 600;
+  font-size: 0.95em;
+  color: var(--textSecondary);
+  padding: 0.75em 0.9em;
+  border-bottom: 1px solid var(--divider);
+}
+
+html[dir="rtl"] #search .boxes h3 {
+  text-align: right;
+}
+
+/* FIX: replace flex-wrap hack with a real responsive grid */
+#search .boxes > div {
+  display: grid;
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+  gap: 0.75em;
+
+  padding: 0.9em;
+  margin: 0;
+}
+
+/* Tile buttons */
+#search .boxes > div > div {
+  width: 100%;
+  margin: 0;
+  padding: 0.9em 0.75em;
+
+  background: rgba(10, 132, 255, 0.85);
+  color: #fff;
+
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 0.35em;
+
+  border-radius: 1em;
+  border: 1px solid rgba(255, 255, 255, 0.14);
+
+  box-shadow:
+    0 10px 26px rgba(0, 0, 0, 0.35),
+    0 1px 0 rgba(255, 255, 255, 0.12) inset;
+
+  transition: 0.12s ease transform, 0.12s ease filter;
+}
+
+#search .boxes > div > div:hover {
+  transform: translateY(-1px);
+  filter: brightness(1.05);
+}
+
+#search .boxes > div > div:active {
+  transform: scale(0.98);
+}
+
+#search .boxes > div > div:focus-visible {
+  outline: 2px solid rgba(255, 255, 255, 0.75);
+  outline-offset: 2px;
+}
+
+#search .boxes p {
+  margin: 0;
+  font-weight: 650;
+  font-size: 0.95em;
+}
+
+#search .boxes i {
+  color: #fff !important;
+  font-size: 2.8em;
+  line-height: 1;
+}
+
+/* Tablet */
+@media (max-width: 1024px) {
+  #search .boxes > div {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+}
+
+/* Small phones */
+@media (max-width: 390px) {
+  #search .boxes > div {
+    grid-template-columns: 1fr;
+  }
+}
+
+
+
+/* ================================================
+   LISTING-ICONS (iOS 26-ish dark glass)
+   ================================================ */
+/* Keeps your mapping, just tweaks opacity + icon rendering on dark glass */
+
+/* General */
+
+.file-icons [aria-label^="."] {
+  opacity: 0.33;
+}
+
+.file-icons [data-ext=".bak"] {
+  opacity: 0.33;
+}
+
+/* Make icons feel more “iOS”, slightly thicker and with soft glow on dark */
+.file-icons i {
+  text-shadow: none;
+}
+
+:root.dark .file-icons i {
+  text-shadow:
+    0 6px 18px rgba(0, 0, 0, 0.45),
+    0 0 0 rgba(0, 0, 0, 0);
+}
+
+/* Icon glyph selection (unchanged) */
+
+.file-icons [data-type="audio"] i::before {
+  content: "volume_up";
+}
+.file-icons [data-type="blob"] i::before {
+  content: "insert_drive_file";
+}
+.file-icons [data-type="image"] i::before {
+  content: "image";
+}
+.file-icons [data-type="pdf"] i::before {
+  content: "description";
+}
+.file-icons [data-type="text"] i::before {
+  content: "description";
+}
+.file-icons [data-type="video"] i::before {
+  content: "movie";
+}
+.file-icons [data-type="invalid_link"] i::before {
+  content: "link_off";
+}
+
+/* Image */
+.file-icons [data-ext=".ai"] i::before,
+.file-icons [data-ext=".odg"] i::before,
+.file-icons [data-ext=".xcf"] i::before {
+  content: "image";
+}
+
+/* Presentation */
+.file-icons [data-ext=".odp"] i::before,
+.file-icons [data-ext=".ppt"] i::before,
+.file-icons [data-ext=".pptx"] i::before {
+  content: "slideshow";
+}
+
+/* Spreadsheet/Database */
+.file-icons [data-ext=".csv"] i::before,
+.file-icons [data-ext=".db"] i::before,
+.file-icons [data-ext=".odb"] i::before,
+.file-icons [data-ext=".ods"] i::before,
+.file-icons [data-ext=".xls"] i::before,
+.file-icons [data-ext=".xlsx"] i::before {
+  content: "border_all";
+}
+
+/* Document */
+.file-icons [data-ext=".doc"] i::before,
+.file-icons [data-ext=".docx"] i::before,
+.file-icons [data-ext=".log"] i::before,
+.file-icons [data-ext=".odt"] i::before,
+.file-icons [data-ext=".rtf"] i::before {
+  content: "description";
+}
+
+/* Code */
+.file-icons [data-ext=".c"] i::before,
+.file-icons [data-ext=".cpp"] i::before,
+.file-icons [data-ext=".cs"] i::before,
+.file-icons [data-ext=".css"] i::before,
+.file-icons [data-ext=".go"] i::before,
+.file-icons [data-ext=".h"] i::before,
+.file-icons [data-ext=".html"] i::before,
+.file-icons [data-ext=".java"] i::before,
+.file-icons [data-ext=".js"] i::before,
+.file-icons [data-ext=".json"] i::before,
+.file-icons [data-ext=".kt"] i::before,
+.file-icons [data-ext=".php"] i::before,
+.file-icons [data-ext=".py"] i::before,
+.file-icons [data-ext=".rb"] i::before,
+.file-icons [data-ext=".rs"] i::before,
+.file-icons [data-ext=".vue"] i::before,
+.file-icons [data-ext=".xml"] i::before,
+.file-icons [data-ext=".yml"] i::before {
+  content: "code";
+}
+
+/* Executable */
+.file-icons [data-ext=".apk"] i::before,
+.file-icons [data-ext=".bat"] i::before,
+.file-icons [data-ext=".exe"] i::before,
+.file-icons [data-ext=".jar"] i::before,
+.file-icons [data-ext=".ps1"] i::before,
+.file-icons [data-ext=".sh"] i::before {
+  content: "web_asset";
+}
+
+/* Installer */
+.file-icons [data-ext=".deb"] i::before,
+.file-icons [data-ext=".msi"] i::before,
+.file-icons [data-ext=".pkg"] i::before,
+.file-icons [data-ext=".rpm"] i::before {
+  content: "archive";
+}
+
+/* Compressed */
+.file-icons [data-ext=".7z"] i::before,
+.file-icons [data-ext=".bz2"] i::before,
+.file-icons [data-ext=".cab"] i::before,
+.file-icons [data-ext=".gz"] i::before,
+.file-icons [data-ext=".rar"] i::before,
+.file-icons [data-ext=".tar"] i::before,
+.file-icons [data-ext=".xz"] i::before,
+.file-icons [data-ext=".zip"] i::before,
+.file-icons [data-ext=".zst"] i::before {
+  content: "folder_zip";
+}
+
+/* Disk */
+.file-icons [data-ext=".ccd"] i::before,
+.file-icons [data-ext=".dmg"] i::before,
+.file-icons [data-ext=".iso"] i::before,
+.file-icons [data-ext=".mdf"] i::before,
+.file-icons [data-ext=".vdi"] i::before,
+.file-icons [data-ext=".vhd"] i::before,
+.file-icons [data-ext=".vmdk"] i::before,
+.file-icons [data-ext=".wim"] i::before {
+  content: "album";
+}
+
+/* Font */
+.file-icons [data-ext=".otf"] i::before,
+.file-icons [data-ext=".ttf"] i::before,
+.file-icons [data-ext=".woff"] i::before,
+.file-icons [data-ext=".woff2"] i::before {
+  content: "font_download";
+}
+
+/* Colors (keep your palette) */
+
+.file-icons [data-type="audio"] i {
+  color: var(--icon-yellow);
+}
+.file-icons [data-type="image"] i {
+  color: var(--icon-orange);
+}
+.file-icons [data-type="video"] i {
+  color: var(--icon-violet);
+}
+.file-icons [data-type="invalid_link"] i {
+  color: var(--icon-red);
+}
+
+.file-icons [data-ext=".ai"] i,
+.file-icons [data-ext=".java"] i,
+.file-icons [data-ext=".jar"] i,
+.file-icons [data-ext=".psd"] i,
+.file-icons [data-ext=".rb"] i,
+.file-icons [data-ext=".pdf"] i {
+  color: var(--icon-red);
+}
+
+.file-icons [data-ext=".html"] i,
+.file-icons [data-ext=".odg"] i,
+.file-icons [data-ext=".odp"] i,
+.file-icons [data-ext=".ppt"] i,
+.file-icons [data-ext=".pptx"] i,
+.file-icons [data-ext=".vue"] i,
+.file-icons [data-ext=".xcf"] i {
+  color: var(--icon-orange);
+}
+
+.file-icons [data-ext=".css"] i,
+.file-icons [data-ext=".js"] i,
+.file-icons [data-ext=".json"] i,
+.file-icons [data-ext=".zip"] i {
+  color: var(--icon-yellow);
+}
+
+.file-icons [data-ext=".apk"] i,
+.file-icons [data-ext=".dex"] i,
+.file-icons [data-ext=".go"] i,
+.file-icons [data-ext=".ods"] i,
+.file-icons [data-ext=".xls"] i,
+.file-icons [data-ext=".xlsx"] i {
+  color: var(--icon-green);
+}
+
+.file-icons [data-ext=".aac"] i,
+.file-icons [data-ext=".bat"] i,
+.file-icons [data-ext=".cab"] i,
+.file-icons [data-ext=".cs"] i,
+.file-icons [data-ext=".dmg"] i,
+.file-icons [data-ext=".doc"] i,
+.file-icons [data-ext=".docx"] i,
+.file-icons [data-ext=".emf"] i,
+.file-icons [data-ext=".exe"] i,
+.file-icons [data-ext=".ico"] i,
+.file-icons [data-ext=".mp2"] i,
+.file-icons [data-ext=".mp3"] i,
+.file-icons [data-ext=".mp4"] i,
+.file-icons [data-ext=".mpg"] i,
+.file-icons [data-ext=".msi"] i,
+.file-icons [data-ext=".odt"] i,
+.file-icons [data-ext=".ps1"] i,
+.file-icons [data-ext=".rtf"] i,
+.file-icons [data-ext=".vob"] i,
+.file-icons [data-ext=".wim"] i {
+  color: var(--icon-blue);
+}
+
+.file-icons [data-ext=".iso"] i,
+.file-icons [data-ext=".php"] i,
+.file-icons [data-ext=".rar"] i {
+  color: var(--icon-violet);
+}
+
+/* Overrides */
+
+.file-icons [data-dir="true"] i {
+  color: var(--icon-blue);
+}
+
+.file-icons [data-dir="true"] i::before {
+  content: "folder";
+}
+
+.file-icons [aria-selected="true"] i {
+  color: var(--iconSecondary);
+}
+
+/* Slight dim for non-selected icons in dark, keeps focus on selection */
+:root.dark .file-icons [aria-selected="false"] i {
+  opacity: 0.95;
+}
+
+
+/* ================================================
+   LISTING (iOS 26-ish dark glass)
+   ================================================ */
+
+html[dir="rtl"] #listing {
+  margin-right: 16em;
+}
+
+#listing h2 {
+  margin: 0 0 0 0.5em;
+  font-size: 0.9em;
+  color: var(--textPrimary);
+  font-weight: 600;
+}
+
+#listing .item div:last-of-type * {
+  text-overflow: ellipsis;
+  overflow: hidden;
+}
+
+#listing > div {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: flex-start;
+}
+
+#listing .item {
+  position: relative;
+  display: flex;
+  flex-wrap: nowrap;
+  align-items: center;
+
+  cursor: pointer;
+  user-select: none;
+
+  background: var(--surfacePrimary);
+  color: var(--textPrimary);
+
+  border: 1px solid var(--borderPrimary);
+  border-radius: 0.9em;
+
+  transition:
+    0.12s ease background,
+    0.12s ease opacity,
+    0.12s ease transform;
+}
+
+:root.dark #listing .item {
+  backdrop-filter: blur(calc(var(--glass-blur) - 6px)) saturate(var(--glass-sat));
+  -webkit-backdrop-filter: blur(calc(var(--glass-blur) - 6px)) saturate(var(--glass-sat));
+  box-shadow:
+    0 10px 26px rgba(0, 0, 0, 0.30),
+    0 1px 0 rgba(255, 255, 255, 0.06) inset;
+}
+
+#listing .item:hover {
+  background: var(--hover);
+}
+
+#listing .item:active {
+  transform: scale(0.99);
+}
+
+#listing .item div:last-of-type {
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  overflow: hidden;
+}
+
+#listing .item p {
+  margin: 0;
+}
+
+#listing .item .size,
+#listing .item .modified {
+  font-size: 0.9em;
+}
+
+#listing .item .name {
+  font-weight: 650;
+}
+
+#listing .item i {
+  font-size: 4em;
+  margin-right: 0.15em;
+  vertical-align: bottom;
+}
+
+#listing .item img {
+  width: 4em;
+  height: 4em;
+  object-fit: cover;
+  margin-right: 0.15em;
+  vertical-align: bottom;
+  border-radius: 0.75em;
+}
+
+/* Empty state message */
+.message {
+  text-align: center;
+  font-size: 2em;
+  margin: 1em auto;
+  display: block !important;
+  width: 95%;
+  color: var(--textPrimary);
+  font-weight: 600;
+}
+
+.message i {
+  font-size: 2.5em;
+  margin-bottom: 0.2em;
+  display: block;
+}
+
+/* Mosaic */
+#listing.mosaic {
+  padding-top: 1em;
+  margin: 0 -0.5em;
+}
+
+#listing.mosaic .item {
+  width: calc(33% - 1em);
+  margin: 0.5em;
+  padding: 0.7em;
+  border-radius: 1em;
+
+  box-shadow:
+    0 12px 32px rgba(0, 0, 0, 0.20),
+    0 1px 0 rgba(255, 255, 255, 0.06) inset;
+}
+
+:root.dark #listing.mosaic .item {
+  backdrop-filter: blur(var(--glass-blur)) saturate(var(--glass-sat));
+  -webkit-backdrop-filter: blur(var(--glass-blur)) saturate(var(--glass-sat));
+}
+
+#listing.mosaic .item:hover {
+  box-shadow:
+    0 16px 40px rgba(0, 0, 0, 0.28),
+    0 1px 0 rgba(255, 255, 255, 0.08) inset;
+}
+
+#listing.mosaic .header {
+  display: none;
+}
+
+#listing.mosaic .item div:first-of-type {
+  width: 5em;
+}
+
+#listing.mosaic .item div:last-of-type {
+  width: calc(100% - 5vw);
+}
+
+/* Gallery */
+#listing.mosaic.gallery .item div:first-of-type {
+  width: 100%;
+  height: 12em;
+}
+
+#listing.mosaic.gallery .item div:last-of-type {
+  position: absolute;
+  bottom: 0.5em;
+  padding: 1em;
+  width: calc(100% - 1em);
+  text-align: center;
+  border-radius: 0.9em;
+}
+
+#listing.mosaic.gallery .item[data-type="image"] div:last-of-type {
+  color: #fff;
+  background: linear-gradient(rgba(0, 0, 0, 0), rgba(0, 0, 0, 0.65));
+}
+
+#listing.mosaic.gallery .item i {
+  width: 100%;
+  margin-right: 0;
+  font-size: 8em;
+  text-align: center;
+}
+
+#listing.mosaic.gallery .item img {
+  width: 100%;
+  height: 100%;
+  border-radius: 0.9em;
+}
+
+#listing.gallery .size,
+#listing.gallery .modified {
+  display: none;
+}
+
+/* List view */
+#listing.list {
+  flex-direction: column;
+  width: 100%;
+  max-width: 100%;
+  margin: 0;
+}
+
+#listing.list .item {
+  width: 100%;
+  margin: 0;
+  padding: 0.95em 1em;
+
+  border-radius: 0;
+  border: 0;
+  border-bottom: 1px solid var(--divider);
+
+  box-shadow: none;
+}
+
+:root.dark #listing.list .item {
+  backdrop-filter: none;
+  -webkit-backdrop-filter: none;
+}
+
+#listing.list h2 {
+  display: none;
+}
+
+/* Selection */
+#listing .item[aria-selected="true"] {
+  background: rgba(10, 132, 255, 0.28) !important;
+  color: var(--textSecondary) !important;
+  border-color: rgba(10, 132, 255, 0.35) !important;
+}
+
+#listing .item[aria-selected="true"] i {
+  color: var(--iconSecondary);
+}
+
+/* List view columns */
+#listing.list .item div:first-of-type {
+  width: 3em;
+}
+
+#listing.list .item div:first-of-type i {
+  font-size: 2em;
+}
+
+#listing.list .item div:first-of-type img {
+  width: 2em;
+  height: 2em;
+  border-radius: 0.5em;
+}
+
+#listing.list .item div:last-of-type {
+  width: calc(100% - 3em);
+  display: flex;
+  align-items: center;
+}
+
+#listing.list .item .name {
+  width: 50%;
+}
+
+#listing.list .item .size {
+  width: 25%;
+}
+
+#listing .item.header {
+  display: none !important;
+  background-color: var(--iconTertiary);
+}
+
+#listing.list .header i {
+  font-size: 1.5em;
+  vertical-align: middle;
+  margin-left: 0.2em;
+}
+
+/* List header row */
+#listing.list .item.header {
+  display: flex !important;
+  background: rgba(24, 30, 36, 0.55);
+  z-index: 999;
+  padding: 0.85em 1em;
+
+  border: 0;
+  border-bottom: 1px solid var(--borderPrimary);
+
+  backdrop-filter: blur(var(--glass-blur)) saturate(var(--glass-sat));
+  -webkit-backdrop-filter: blur(var(--glass-blur)) saturate(var(--glass-sat));
+}
+
+#listing.list .item.header > div {
+  width: 100%;
+}
+
+#listing.list .item.header .name {
+  margin-right: 3em;
+}
+
+#listing.list .header a {
+  color: inherit;
+}
+
+#listing.list .name {
+  font-weight: 500;
+  word-wrap: break-word;
+  word-break: break-all;
+  white-space: pre-wrap;
+}
+
+#listing.list .header span {
+  vertical-align: middle;
+}
+
+#listing.list .header i {
+  opacity: 0;
+  transition: 0.12s ease opacity;
+}
+
+#listing.list .header p:hover i,
+#listing.list .header .active i {
+  opacity: 1;
+}
+
+#listing.list .item.header .active {
+  font-weight: 700;
+}
+
+/* Multiple selection bar */
+#listing #multiple-selection {
+  position: fixed;
+  bottom: -4em;
+  left: 0;
+  z-index: 99999;
+  width: 100%;
+
+  height: 4em;
+  padding: 0.5em 0.75em 0.5em 1em;
+  display: flex;
+  justify-content: space-between;
+
+  background: rgba(10, 132, 255, 0.85);
+  border-top: 1px solid rgba(255, 255, 255, 0.12);
+
+  backdrop-filter: blur(var(--glass-blur)) saturate(var(--glass-sat));
+  -webkit-backdrop-filter: blur(var(--glass-blur)) saturate(var(--glass-sat));
+
+  transition: 0.2s ease bottom;
+}
+
+#listing #multiple-selection.active {
+  bottom: 0;
+}
+
+#listing #multiple-selection p,
+#listing #multiple-selection i {
+  color: #fff;
+}
+
+
+/* ================================================
+   LOGIN (iOS 26-ish dark glass)
+   ================================================ */
+
+#login {
+  position: fixed;
+  inset: 0;
+  color: var(--textSecondary);
+  
+  /* Light mode */
+  background:
+    url("/static/img/background.webp") center center / cover no-repeat fixed,
+    var(--background);
+}
+
+/* Dark mode */
+:root.dark #login {
+  background:
+    linear-gradient(rgba(0,0,0,0.55), rgba(0,0,0,0.55)),
+    url("/static/img/background.webp") center center / cover no-repeat fixed,
+    var(--background);
+}
+
+#login img {
+  width: 8em;
+  height: 8em;
+  margin: 0 auto;
+  display: block;
+  border-radius: 1em;
+}
+
+#login h1 {
+  text-align: center;
+  font-size: 2.2em;
+  margin: 0.45em 0 0.75em;
+  font-weight: 400;
+  letter-spacing: -0.01em;
+  font-family: "Audiowide", sans-serif;
+  background: linear-gradient(180deg, #ffffff 0%, #0c6196 100%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+  -webkit-text-fill-color: transparent;
+}
+
+/* Centered glass card */
+#login form {
+  position: fixed;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+
+  max-width: 18em;
+  width: 90%;
+
+  background: var(--surfacePrimary);
+  border: 1px solid var(--borderPrimary);
+  border-radius: 1.25em;
+
+  padding: 1.25em 1.1em;
+
+  box-shadow:
+    0 18px 55px rgba(0, 0, 0, 0.45),
+    0 1px 0 rgba(255, 255, 255, 0.06) inset;
+}
+
+:root.dark #login form {
+  background: rgba(24, 30, 36, 0.55);
+  backdrop-filter: blur(var(--glass-blur)) saturate(var(--glass-sat));
+  -webkit-backdrop-filter: blur(var(--glass-blur)) saturate(var(--glass-sat));
+}
+
+#login.recaptcha form {
+  min-width: 304px;
+}
+
+#login #recaptcha {
+  margin: 0.6em 0 0;
+}
+
+/* Alerts */
+#login .wrong {
+  background: rgba(255, 69, 58, 0.9);
+  color: #fff;
+  padding: 0.6em;
+  text-align: center;
+  border-radius: 0.9em;
+  animation: 0.2s opac forwards;
+}
+
+#login .logout-message {
+  background: rgba(244, 119, 80, 0.92);
+  color: #fff;
+  padding: 0.6em;
+  text-align: center;
+  border-radius: 0.9em;
+  animation: 0.2s opac forwards;
+  text-transform: none;
+}
+
+@keyframes opac {
+  0% {
+    opacity: 0;
+  }
+  100% {
+    opacity: 1;
+  }
+}
+
+#login p {
+  cursor: pointer;
+  text-align: right;
+
+  color: var(--blue);
+  text-transform: none;
+
+  font-weight: 600;
+  font-size: 0.9rem;
+
+  margin: 0.6rem 0 0;
+}
+
+/* ================================================
+   MDPREVIEW (iOS 26-ish dark glass)
+   ================================================ */
+
+.md_preview {
+  padding: 1rem;
+
+  background: var(--surfacePrimary);
+  color: var(--textSecondary);
+
+  border: 1px solid var(--borderPrimary);
+  border-radius: 1em;
+
+  font-size: 18px;
+  line-height: 1.35;
+
+  box-shadow:
+    0 12px 32px rgba(0, 0, 0, 0.20),
+    0 1px 0 rgba(255, 255, 255, 0.06) inset;
+}
+
+:root.dark .md_preview {
+  backdrop-filter: blur(var(--glass-blur)) saturate(var(--glass-sat));
+  -webkit-backdrop-filter: blur(var(--glass-blur)) saturate(var(--glass-sat));
+}
+
+#preview-container {
+  overflow: auto;
+  flex: 1;
+}
+
+/* ================================================
+   MOBILE (iOS 26-ish dark glass)
+   ================================================ */
+
+@media (max-width: 1024px) {
+  nav {
+    width: 10em;
+  }
+}
+
+@media (max-width: 1024px) {
+  main {
+    width: calc(100% - 13em);
+  }
+}
+
+@media (max-width: 736px) {
+  body {
+    padding-bottom: 5em;
+  }
+
+  #listing.list .item .size {
+    display: none;
+  }
+
+  #listing.list .item .name {
+    width: 60%;
+  }
+
+  #more {
+    display: inherit;
+  }
+
+  header .overlay {
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.35);
+    backdrop-filter: blur(6px);
+    -webkit-backdrop-filter: blur(6px);
+  }
+
+  #dropdown {
+    position: fixed;
+    top: 1em;
+    right: 1em;
+
+    display: block;
+
+    background: rgba(24, 30, 36, 0.65);
+    border: 1px solid var(--borderPrimary);
+    border-radius: 1em;
+
+    box-shadow:
+      0 16px 40px rgba(0, 0, 0, 0.45),
+      0 1px 0 rgba(255, 255, 255, 0.06) inset;
+
+    transform: scale(0);
+    transition: 0.12s ease-in-out transform;
+    transform-origin: top right;
+    z-index: 99999;
+
+    backdrop-filter: blur(var(--glass-blur)) saturate(var(--glass-sat));
+    -webkit-backdrop-filter: blur(var(--glass-blur)) saturate(var(--glass-sat));
+    overflow: hidden;
+  }
+
+  html[dir="rtl"] #dropdown {
+    right: unset;
+    left: 1em;
+    transform-origin: top left;
+  }
+
+  #dropdown > div {
+    display: block;
+  }
+
+  #dropdown.active {
+    transform: scale(1);
+  }
+
+  #dropdown .action {
+    display: flex;
+    align-items: center;
+    border-radius: 0;
+    width: 100%;
+  }
+
+  #dropdown .action span:not(.counter) {
+    display: inline-block;
+    padding: 0.4em;
+  }
+
+  #dropdown .counter {
+    left: 2.25em;
+  }
+
+  #file-selection {
+    position: fixed;
+    bottom: 1em;
+    left: 50%;
+    transform: translateX(-50%);
+
+    display: flex;
+    align-items: center;
+
+    width: 95%;
+    max-width: 22em;
+    z-index: 1;
+
+    background: rgba(24, 30, 36, 0.65);
+    border: 1px solid var(--borderPrimary);
+    border-radius: 1.25em;
+
+    box-shadow:
+      0 16px 40px rgba(0, 0, 0, 0.45),
+      0 1px 0 rgba(255, 255, 255, 0.06) inset;
+
+    backdrop-filter: blur(var(--glass-blur)) saturate(var(--glass-sat));
+    -webkit-backdrop-filter: blur(var(--glass-blur)) saturate(var(--glass-sat));
+  }
+
+  #file-selection .action {
+    border-radius: 999px;
+    width: auto;
+  }
+
+  #file-selection > span {
+    display: inline-block;
+    margin-left: 1em;
+    margin-right: auto;
+    color: var(--textPrimary);
+  }
+
+  #file-selection .action span {
+    display: none;
+  }
+
+  nav {
+    top: 0;
+    z-index: 99999;
+
+    height: 100%;
+    width: 16em;
+
+    background: rgba(24, 30, 36, 0.65);
+    border-right: 1px solid var(--borderPrimary);
+
+    box-shadow:
+      0 16px 40px rgba(0, 0, 0, 0.45),
+      0 1px 0 rgba(255, 255, 255, 0.06) inset;
+
+    transition: 0.12s ease left, 0.12s ease right;
+    left: -17em;
+
+    backdrop-filter: blur(var(--glass-blur)) saturate(var(--glass-sat));
+    -webkit-backdrop-filter: blur(var(--glass-blur)) saturate(var(--glass-sat));
+  }
+
+  html[dir="rtl"] nav {
+    left: unset;
+    right: -17em;
+  }
+
+  nav.active {
+    left: 0;
+  }
+
+  html[dir="rtl"] nav.active {
+    left: unset;
+    right: 0;
+  }
+
+  .shell__divider {
+    height: 12px;
+  }
+
+  header .search-button,
+  header .menu-button {
+    display: inherit;
+  }
+
+  header img {
+    display: none;
+  }
+
+  #listing {
+    margin-bottom: 5em;
+  }
+
+  html[dir="rtl"] #listing {
+    margin-right: unset;
+  }
+
+  html[dir="rtl"] .breadcrumbs {
+    transform: translateX(16em);
+  }
+
+  html[dir="rtl"] #nav .wrapper {
+    margin-right: unset;
+  }
+
+  html[dir="rtl"] .dashboard .row {
+    margin-right: unset;
+  }
+
+  main {
+    margin: 0 1em;
+    width: calc(100% - 2em);
+  }
+
+  #search {
+    display: none;
+  }
+
+  #search.active {
+    display: block;
+  }
+}
+
+@media (max-width: 450px) {
+  #listing.list .item .modified {
+    display: none;
+  }
+
+  #listing.list .item .name {
+    width: 100%;
+  }
+}
+
+/* ================================================
+   UPLOAD-FILES (iOS 26-ish dark glass)
+   ================================================ */
+
+.upload-files .card.floating {
+  left: auto;
+  top: auto;
+  margin: 0;
+  right: 0.75em;
+  bottom: 0.75em;
+  transform: none;
+
+  max-width: 26em;
+  width: calc(100% - 1.5em);
+}
+
+.upload-files .file {
+  margin-bottom: 10px;
+}
+
+.upload-files .file .file-name {
+  font-size: 1.05em;
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  color: var(--textSecondary);
+}
+
+.upload-files .file .file-name i {
+  margin-right: 0;
+  color: var(--iconTertiary);
+}
+
+.upload-files .file .file-progress {
+  margin-top: 6px;
+  width: 100%;
+  height: 6px;
+
+  background: rgba(255, 255, 255, 0.08);
+  border: 1px solid var(--borderPrimary);
+  border-radius: 999px;
+
+  overflow: hidden;
+}
+
+.upload-files .file .file-progress div {
+  height: 100%;
+  background-color: var(--blue);
+  width: 0;
+  transition: 0.2s ease width;
+  border-radius: 999px;
+}
+
+.upload-files.closed .card-content {
+  display: none;
+  padding: 0 1em 1em;
+}
+
+.upload-files .card .card-title {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  font-size: 0.8em;
+  font-weight: 600;
+
+  padding: 1em 1em 0;
+
+  color: var(--textPrimary);
+}
+
+.upload-files.closed .card-title {
+  font-size: 0.72em;
+  padding: 0.6em 1em;
+}
+
+@media (max-width: 450px) {
+  .upload-files .card.floating {
+    max-width: 100%;
+    width: calc(100% - 1.5em);
+    right: 0.75em;
+    bottom: 0.75em;
+  }
+}
