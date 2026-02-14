@@ -18,9 +18,9 @@ It adds glass effects, blur styling, and a custom background image.
 
 ### iPhone
 
-<img src="assets/iphone-login.png" width="350" />
-<img src="assets/iphone-main.png" width="350" />
-<img src="assets/iphone-menu.png" width="350" />
+<img src="assets/iphone 15-login.png" width="350" />
+<img src="assets/iphone 15-main.png" width="350" />
+<img src="assets/iphone 15-menu.png" width="350" />
 
 ------------------------------------------------------------------------
 ## Install
